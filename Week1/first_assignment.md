@@ -159,7 +159,7 @@ $ make install
 
 <br/>
 
-Apache을 실행해 보자. 
+**Apache을 실행해 보자.** 
 
 ```
 $ sudo /usr/local/apache2.4/bin/httpd -k start
