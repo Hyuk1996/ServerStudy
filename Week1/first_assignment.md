@@ -164,7 +164,7 @@ $ make install
 - **Apache을 실행해 보자.** 
 
 ```
-$ sudo /usr/local/apache2.4/bin/httpd -k start
+$ sudo /usr/local/apache2.4/bin/httpd -k start // stop을 쓰면 종료
 $ ps -ef|grep httpd|grep -v grep
 $ sudo netstat -anp|grep httpd
 $ sudo curl http://127.0.0.1 // http정보 터미널로 가져오기.
@@ -376,4 +376,114 @@ datadir=/usr/local/mysql/data
 <br/>
 
 #### - php 소스 설치
+
+php 설치에 필요한 의존성 패키지 설치
+
+```
+$ apt-get install libxml2-dev
+$ apt-get install libjpeg-dev
+$ apt-get install libpng-dev
+$ apt-get install libsqlite3-dev
+```
+
+<br/>
+
+1. **소스 다운 받기**
+
+```
+$ cd /usr/local
+$ wget https://www.php.net/distributions/php-7.4.8.tar.gz
+$ tar xvfz php-7.4.8.tar.gz
+```
+
+<br/>
+
+2. **Makefile 만들기 && Complie 하기 && install 하기**
+
+```
+$ cd php-7.4.8
+$ ./configure \
+--with-apxs2=/usr/local/apache2.4/bin/apxs \
+--enable-mysqlnd \
+--with-mysql-sock=mysqlnd \
+--with-mysqli=mysqlnd \
+--with-pdo-mysql=mysqlnd \
+--with-imap-ssl \
+--with-iconv \
+--enable-gd \
+--with-jpeg \
+--with-libxml \
+--with-openssl
+
+$ make
+$ make test
+$ make install
+```
+
+위와 같이 설치해주면 /usr/local/apache2.4/modules/ 에 libphp7.so가 설치 되었음을 확인할 수 있다. 
+
+<br/>
+
+#### - apache와 php 연동하기
+
+<br/>
+
+1. /usr/local/apache2.4/conf/httpd.conf 설정 파일에 PHP 모듈이 있는지 확인한다. 
+
+![1](/Users/hyuck/ServerStudy/Week1/img/1.jpg)
+
+확인 되었으면 vi를 이용해 해당 파일에 다음과 같이 한 줄을 추가해 준다. 
+
+![2](/Users/hyuck/ServerStudy/Week1/img/2.jpg)
+
+<br/>
+
+2. php.ini 파일 세팅
+
+php.ini 는 php 의 설정 파일이다. php configure 시에 옵션으로 위치를 설정하지 앟으면 /usr/local/lib/php.ini 을 사용한다. 
+
+```
+$ cd /usr/local/php-7.4.8
+$ cp php.ini-production /usr/local/lib/php.ini
+```
+
+<br/>
+
+#### - 테스트 하기
+
+apache의 html, php 파일은 기본적으로 /htdocs에 위치한다. 
+
+<br/>
+
+1. 테스트할 php 파일 만들기 
+
+```
+$ cd /usr/local/apache2.4/htdocs
+
+$ vi phpinfo.php
+<? php
+phpinfo();
+?>
+```
+
+<br/>
+
+2. apache을 실행시키고 php파일 불러오기.
+
+```
+$ sudo /usr/local/apache2.4/bin/httpd -k start
+//아파치 실행 명령
+
+$ ps -ef|grep httpd|grep -v grep
+//아파치 실행중인지 확인
+
+$ sudo netstat -anp|grep httpd
+
+$ sudo curl http://127.0.0.1/
+//curl 명령으로 로컬호스트로 아파치 켜졌는지 확인(It's Work!)
+```
+
+브라우저 이용 http://127.0.0.1/phpinfo.php로 접속해서 다음 화면이 나오면 연동된것이다. 
+
+![3](/Users/hyuck/ServerStudy/Week1/img/3.jpg)
 
