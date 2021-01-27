@@ -405,6 +405,55 @@ datadir=/usr/local/mysql/data
 
 <br/>
 
+- **mysql 서비스 등록**
+
+컴퓨터를 부팅할 때마다 mysql server을 직접 시작해야 하는 번거로움을 없애기 위해 서비스 등록이 필요하다. 서비스 등록을 해두면 컴퓨터가 부팅 시 자동으로 mysql server가 시작되고 간단한 명령어로 종료 재시작 할 수 있다. 
+
+<br/>
+
+과정은 다음과 같다. 
+
+1. mysqld 파일 복사
+
+```
+$ sudo cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld
+```
+
+<br/>
+
+2. mysqld 파일에 basedir, datadir 설정
+
+```
+$ sudo vi /etc/init.d/mysqld
+```
+
+basedir=/usr/local/mysql
+
+datadir=/usr/local/mysql/data
+
+<br/>
+
+3. mysqld 서비스 등록
+
+```
+update-rc.d mysqld defaults
+```
+
+<br/>
+
+- 간단한 명령어
+
+```
+$ service mysql start
+$ service mysql stop
+$ service mysql restart //서버를 중지했다가 다시 시작하는거
+$ service mysql status //서버 상태 확인. 나가려면 q 누르기
+```
+
+<br/>
+
+<br/>
+
 - **php 소스 설치**
 
 php 설치에 필요한 의존성 패키지 설치
