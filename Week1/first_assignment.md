@@ -16,6 +16,8 @@ VM(Virtual machine)은 컴퓨터 환경을 소프트웨어로 구현한 것이�
 
 <br/>
 
+<br/>
+
 ### - apm 소스 설치(수동 설치, 컴파일 설치)
 
 수동 설치는 패키지관리자가 해주는 일을 직접 사용자가 수행하는 것이다. 따라서 소스를 직접 다운받아 컴파일 하여 설치해야 한다. 그 과정은 다음과 같다.
@@ -29,7 +31,7 @@ VM(Virtual machine)은 컴퓨터 환경을 소프트웨어로 구현한 것이�
 
 <br/>
 
-- **Apache 2.4 소스 설치**
+#### - Apache 2.4 소스 설치
 
 Apache는 HTTP 웹 서버로 Apache 재단에서 만든 소프트웨어이다. 
 
@@ -159,7 +161,7 @@ $ make install
 
 <br/>
 
-**Apache을 실행해 보자.** 
+- **Apache을 실행해 보자.** 
 
 ```
 $ sudo /usr/local/apache2.4/bin/httpd -k start
@@ -169,4 +171,209 @@ $ sudo curl http://127.0.0.1 // http정보 터미널로 가져오기.
 ```
 
 이때 터미널에 It's Work!가 출력되면 정상적으로 실행 된 것이다. 
+
+<br/><br/>
+
+#### - mysql 8 소스 설치
+
+mysql은 RDBMS이다. 즉 관계형 데이터베이스를 관리해 주는 시스템이다. 
+
+<br/>
+
+mysql을 설치 하기전에 설치해야할 의존성 패키지들이 있다. 
+
+1. CMake
+2. GNU make 3.75이상
+3. GCC 5.3 이상
+4. C++ 또는 C99 컴파일러
+5. SSL library
+6. Boost C++ library
+7. ncurseslibrary
+8. Perl
+
+해당 패키지들을 apt-get으로 설치한 사실을 확인하고 싶으면 다음과 같은 명령어를 이용하면 된다. 
+
+```
+$ dpkg -l | grep [이름]
+```
+
+<br/>
+
+나는 확인해본 결과 1, 5, 6, 7 패키가 없어서 다음과 같이 apt-get을 이용해 설치했다. 
+
+```
+$ apt-get update
+$ apt-get install cmake
+$ apt-get install libssl-dev
+$ apt-get install libboost-all-dev
+$ apt-get install libncurses5-dev libncursesw5-dev
+```
+
+<br/>
+
+이제 본격적으로 mysql을 설치해보자. 
+
+1. **소스 다운 받기**
+
+[설치 링크]( https://dev.mysql.com/downloads/mysql/) 여기 링크로 가면 소스 파일의 링크를 알 수 있다. 그 후 다음 명령어들로 소스를 받았다. 
+
+```
+$ cd /usr/local
+$ wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.21.tar.gz
+$ tar xvfz mysql-8.0.21.tar.gz
+```
+
+<br/>
+
+2. **빌드 파일 만들기 && 컴파일 && 설치**
+
+mysql은 apache와 다르게 cmake을 이용해 설치 옵션을 부여한다. 또 mysql은 빌드시에 하단에 디렉토리를 만들어 작업하도록 권고하기 때문에 디렉토리를 만들어 그곳에서 빌드를 진행했다. 
+
+```
+$ cd /usr/local/mysql-8.0.21
+$ mkdir hyukmysql01
+$ cd usr/local/mysql-8.0.21/hyukmysql01
+
+$ cmake \
+.. \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_DATADIR=/usr/local/mysql/data \
+-DMYSQL_UNIX_ADDR=/usr/local/mysql/mysql.sock \
+-DMYSQL_TCP_PORT=3306 \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DSYSCONFDIR=/etc \
+-DWITH_EXTRA_CHARSETS=all \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+-DDOWNLOAD_BOOST=1 \
+-DWITH_BOOST=/usr/local/mysql/boost 
+
+$ make
+$ make test 
+$ make install
+```
+
+위와 같이 하면 mysql이 설치된다. 
+
+<br/>
+
+#### - 초기화 하기
+
+[출처](https://dev.mysql.com/doc/refman/8.0/en/data-directory-initialization.html#data-directory-initialization-server-actions)
+
+mysql을 소스 설치할 경우 data directory초기화가 되지 않으므르 직접 초기화를 해줘야한다. 
+
+1. **Mysql 그룹과 유저 생성**
+
+시스템에 mysql을 수행할 user와 group이 없으면 생성해 줘야한다. 과정은 다음과 같다.
+
+```
+$ groupadd mysql 
+//mysql이라는 그룹을 지어서 관리
+
+$ useradd -r -g mysql -s /bin/false mysql
+// 사용자 추가 useradd
+// -r : 시스템 계정
+// -g : 그룹 지정
+// -s : 로그인 쉘 지정
+// 마지막 mysql은 사용자의 이름
+```
+
+<br/>
+
+2. **Mysql-files directory 만들기**
+
+Secure_file_priv가 mysql-files에 접근해야 하므로 만들어 줘야한다. 
+
+```
+$ cd /usr/local/mysql
+$ mkdir mysql-files
+
+$ chown -R mysql:mysql /usr/local/mysql
+$ chown mysql:mysql mysql-files
+$ chmod 750 mysql-files
+```
+
+<br/>
+
+3. **Data Directory 초기화**
+
+Data directory는 생성된 database들이 저장되는 위치이다. 
+
+서버를 이용해 data directory를 초기화 해줘야 한다. 
+
+```
+$ bin/mysqld --initialize --user=mysql \
+--basedir=/usr/local/mysql \
+--datadir=/usr/local/mysql/data
+```
+
+위 과정의 마지막 단계에서 임시 비밀번호가 출력된다.(이는 로그인시 필요하니 기억해둘것) 
+
+<br/>
+
+4. **root계정 암호 초기화**
+
+먼저 mysql 서버를 시작하자. 
+
+```
+$ bin/mysqld_safe --user=mysql &
+```
+
+<br/>
+
+mysql이 잘 실행되고 있는지 확인하기.
+
+```
+$ ps -ef | grep mysqld
+```
+
+<br/>
+
+mysql에 접속하기.
+
+```
+$ bin/mysql -u root -p
+```
+
+<br/>
+
+mysql에서 비밀번호 변경하기.
+
+```
+ALTER USER 'root'@'localhost' IDENTIFIED BY '사용할 비밀번호';
+```
+
+mysql에서 나오고 싶으면 quit을 입력하면 나올 수 있다.
+
+<br/>
+
+Mysql 서버 종료하기.
+
+```
+$ bin/mysqladmin -u root -p shutdown
+```
+
+<br/>
+
+#### - mysql 환경설정
+
+mysql 옵션 파일은 mysql이 실행될 때마다 읽힌다. 따라서 옵션파일을 설정하면 편리하게 사용할 수 있다. 
+
+```
+vi /etc/my.cnf // 옵션 파일 위치
+
+//vi에서 다음과 같이 입력
+[mysqld]
+bind-address=0.0.0.0
+port=3306
+basedir=/usr/local/mysql
+datadir=/usr/local/mysql/data
+```
+
+<br/>
+
+#### - php 소스 설치
 
