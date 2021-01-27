@@ -462,11 +462,11 @@ $ make install
 
 1. /usr/local/apache2.4/conf/httpd.conf 설정 파일에 PHP 모듈이 있는지 확인한다. 
 
-![1](/Users/hyuck/ServerStudy/Week1/img/1.jpg)
+![1](https://user-images.githubusercontent.com/29492667/105990017-39e4b800-60e5-11eb-9cc4-3dcc5ff4252a.jpg)
 
 확인 되었으면 vi를 이용해 해당 파일에 다음과 같이 한 줄을 추가해 준다. 
 
-![2](/Users/hyuck/ServerStudy/Week1/img/2.jpg)
+![2](https://user-images.githubusercontent.com/29492667/105990101-600a5800-60e5-11eb-9785-959a1c1fb512.jpg)
 
 <br/>
 
@@ -519,4 +519,5 @@ $ sudo curl http://127.0.0.1/
 
 브라우저 이용 http://127.0.0.1/phpinfo.php로 접속해서 다음 화면이 나오면 연동된것이다. 
 
-![3](/Users/hyuck/ServerStudy/Week1/img/3.jpg)
+![3](https://user-images.githubusercontent.com/29492667/105990125-67c9fc80-60e5-11eb-8505-a957ca929be9.jpg)
+
