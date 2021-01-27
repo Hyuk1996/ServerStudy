@@ -2,42 +2,56 @@
 
 <br/>
 
-### - MacOs에서 리눅스 환경 만들기
+## - MacOs에서 리눅스 환경 만들기
 
-MacOs에서 리눅스 환경을 만드는 방법은 여러가지 있다. 나는 그 중 Virtual machine을 이용해 리눅스 환경을 만들었다. 
+MacOs에서 리눅스 환경을 만드는 방법은 여러 가지 있다. 나는 그중 Virtual machine을 이용해 리눅스 환경을 만드는 방법을 이용했다.
 
-Virtual machine을 이용해 ubuntu 설치하기. 
-
-VM(Virtual machine)은 컴퓨터 환경을 소프트웨어로 구현한 것이다. 따라서 VM을 이용하면 내 컴퓨터의 원래 OS위에서 다른 OS를 실행할 수 있다. 
+VM(Virtual machine)은 컴퓨터 환경을 소프트웨어로 구현한 것이다. 따라서 VM을 이용하면 내 컴퓨터의 원래 OS 위에서 다른 OS를 실행할 수 있다. 
 
 <br/>
 
-나는 여러 VM중 Vmware Fusion을 이용했다. 그리고 그 위에 ubuntu 18.04을 설치했다. 
+저는 여러 VM 중 Vmware Fusion을 이용했다. 그리고 그 위에 ubuntu 18.04를 설치해 리눅스 환경을 만들었다.  
 
 <br/>
 
 <br/>
 
-### - apm 소스 설치(수동 설치, 컴파일 설치)
+## - apm(apache, php, mysql) 소스 설치(수동 설치, 컴파일 설치)
 
-수동 설치는 패키지관리자가 해주는 일을 직접 사용자가 수행하는 것이다. 따라서 소스를 직접 다운받아 컴파일 하여 설치해야 한다. 그 과정은 다음과 같다.
+- **소스 설치(수동 설치)?**
 
-1. 소스파일 다운받기.
-2. ./configure이용해 설치하기 위한 환경 설정.
-3. make이용 컴파일(소스파일을 이진파일로).
-4. make install이용 설치하기.
-
-위 과정을 좀더 자세히 알아보자. 2번 과정은 현재 OS의 종류나 컴파일러의 위치, 종류 등을 여러가지 설정을 통해 makefile을 만드는 과정이다. 3번 과정은 2번 과정에서 만든 makefile을 이용해 컴파일 하는 과정이다. 4번 과정은 컴파일된 프로그램, 환경 파일, 데이터 파일을 지정된 위치에 복사하는 과정이다. 
+수동 설치는 사용자가 직접 소스를 받아와 컴파일하는 방식으로 프로그램을 설치하는 유닉스의 전통적인 방식입니다. 위와 같이 프로그램을 설치하려면 과정도 번거롭고 또 버전이 업그레이드될 때마다 다시 컴파일 해줘야 합니다. 요약하자면 많이 번거롭습니다. 물론 위 작업을 간단하게 해주는 패키지 매니저를 이용해 설치를 해도 됩니다. 하지만 가끔씩 보안상의 이유로 패키지 매니저를 사용하지 못하는 경우가 있을 수 있습니다. 따라서 수동 설치 방법을 알아둘 필요가 있습니다. 
 
 <br/>
 
-#### - Apache 2.4 소스 설치
+- **소스 설치 과정**
+
+1. 소스 파일 다운
+2. ./configure 
+3. make
+4. make install
+
+위 과정을 좀더 자세히 설명하겠다. 
+
+1번 과정은 말 그대로 소스 코드를 받아와서 내 컴퓨터에 저장하는 과정이다. 
+
+2번 과정은 1번 과정에서 받아온 소스 파일들을 어떻게 compile할 것인지 makefile을 만들어 주는 과정이다.
+
+3번 과정은 2번 과정에서 만든 makefile을 가지고 compile을 하는 단계다. 
+
+4번 단계는 3번 단계에서 만들어진 파일들을 알맞은 위치에 설치하는 과정이다. 
+
+<br/>
+
+<br/>
+
+- **Apache 2.4 소스 설치**
 
 Apache는 HTTP 웹 서버로 Apache 재단에서 만든 소프트웨어이다. 
 
 <br/>
 
-Apache 2.4를 소스 설치하는 과정에 필요한 패키지들은 다음과 같다. 
+Apache 2.4를 소스 설치하는 과정에 필요한 기본적인 패키지들은 다음과 같다. 
 
 ```
 apt-get install make // apt-get은 ubuntu의 패키지관리자
@@ -52,9 +66,11 @@ apt-get install curl
 
 또 Apache을 설치하기 위해서는 APR, PCRE와 같은 의존성 패키지를 설치 해야한다. 
 
-- **Apr, apr-util 소스 설치**
+<br/>
 
 <br/>
+
+- **Apr, apr-util 소스 설치**
 
 1. 소스 다운 받기
 
@@ -129,11 +145,13 @@ $ make install
 
 이제 의존성 패키지는 다 설치했으므로 apache을 소스 설치하자. 
 
-- **Apache 2.4 소스 설치**
+<br/>
 
 <br/>
 
-1. 소스 다운 
+- **Apache 2.4 소스 설치**
+
+1. 소스 다운
 
 ```
 $ cd /usr/local
@@ -143,7 +161,7 @@ $ tar xvfz httpd-2.4.46.tar.gz
 
 <br/>
 
-2. 소스 컴파일 & 설치 
+2. 소스 설치
 
 ```
 $ cd httpd-2.4.46
@@ -174,7 +192,9 @@ $ sudo curl http://127.0.0.1 // http정보 터미널로 가져오기.
 
 <br/><br/>
 
-#### - mysql 8 소스 설치
+- **mysql 8 소스 설치**
+
+1. mysql을 설치하기 전
 
 mysql은 RDBMS이다. 즉 관계형 데이터베이스를 관리해 주는 시스템이다. 
 
@@ -199,7 +219,7 @@ $ dpkg -l | grep [이름]
 
 <br/>
 
-나는 확인해본 결과 1, 5, 6, 7 패키가 없어서 다음과 같이 apt-get을 이용해 설치했다. 
+저는 확인해본 결과 1, 5, 6, 7 패키가 없어서 다음과 같이 apt-get을 이용해 설치했다. 
 
 ```
 $ apt-get update
@@ -213,9 +233,11 @@ $ apt-get install libncurses5-dev libncursesw5-dev
 
 이제 본격적으로 mysql을 설치해보자. 
 
-1. **소스 다운 받기**
+<br/>
 
-[설치 링크]( https://dev.mysql.com/downloads/mysql/) 여기 링크로 가면 소스 파일의 링크를 알 수 있다. 그 후 다음 명령어들로 소스를 받았다. 
+2. 소스 다운
+
+[설치 링크]( https://dev.mysql.com/downloads/mysql/) 여기 링크로 가면 소스 파일의 링크를 알 수 있다. 그 후 다음 명령어들을 이용해 소스를 다운 받았다.
 
 ```
 $ cd /usr/local
@@ -225,9 +247,9 @@ $ tar xvfz mysql-8.0.21.tar.gz
 
 <br/>
 
-2. **빌드 파일 만들기 && 컴파일 && 설치**
+2. 소스 설치
 
-mysql은 apache와 다르게 cmake을 이용해 설치 옵션을 부여한다. 또 mysql은 빌드시에 하단에 디렉토리를 만들어 작업하도록 권고하기 때문에 디렉토리를 만들어 그곳에서 빌드를 진행했다. 
+mysql은 apache와 다르게 cmake을 이용해 makefile을 만든다. 또 mysql은 빌드시에 하단에 디렉토리를 만들어 작업하도록 권고하기 때문에 디렉토리를 만들어 그곳에서 빌드를 진행했다. 
 
 ```
 $ cd /usr/local/mysql-8.0.21
@@ -259,13 +281,17 @@ $ make install
 
 <br/>
 
-#### - 초기화 하기
+<br/>
+
+- **mysql 초기화 하기**
 
 [출처](https://dev.mysql.com/doc/refman/8.0/en/data-directory-initialization.html#data-directory-initialization-server-actions)
 
-mysql을 소스 설치할 경우 data directory초기화가 되지 않으므르 직접 초기화를 해줘야한다. 
+mysql을 소스 설치할 경우 data directory초기화가 되지 않으므르 직접 초기화 해줘야 한다. 
 
-1. **Mysql 그룹과 유저 생성**
+<br/>
+
+1. Mysql 그룹과 유저 생성
 
 시스템에 mysql을 수행할 user와 group이 없으면 생성해 줘야한다. 과정은 다음과 같다.
 
@@ -283,7 +309,7 @@ $ useradd -r -g mysql -s /bin/false mysql
 
 <br/>
 
-2. **Mysql-files directory 만들기**
+2. Mysql-files directory 만들기
 
 Secure_file_priv가 mysql-files에 접근해야 하므로 만들어 줘야한다. 
 
@@ -298,7 +324,7 @@ $ chmod 750 mysql-files
 
 <br/>
 
-3. **Data Directory 초기화**
+3. Data Directory 초기화
 
 Data directory는 생성된 database들이 저장되는 위치이다. 
 
@@ -310,13 +336,13 @@ $ bin/mysqld --initialize --user=mysql \
 --datadir=/usr/local/mysql/data
 ```
 
-위 과정의 마지막 단계에서 임시 비밀번호가 출력된다.(이는 로그인시 필요하니 기억해둘것) 
+위 과정의 마지막 단계에서 임시 비밀번호가 출력된다. 이는 로그인시 필요하니 기억해둬야 한다.
 
 <br/>
 
-4. **root계정 암호 초기화**
+4. root계정 암호 초기화
 
-먼저 mysql 서버를 시작하자. 
+- 먼저 mysql 서버를 시작하자. 
 
 ```
 $ bin/mysqld_safe --user=mysql &
@@ -324,7 +350,7 @@ $ bin/mysqld_safe --user=mysql &
 
 <br/>
 
-mysql이 잘 실행되고 있는지 확인하기.
+- mysql이 잘 실행되고 있는지 확인하기.
 
 ```
 $ ps -ef | grep mysqld
@@ -332,7 +358,7 @@ $ ps -ef | grep mysqld
 
 <br/>
 
-mysql에 접속하기.
+- mysql에 접속하기.
 
 ```
 $ bin/mysql -u root -p
@@ -340,7 +366,7 @@ $ bin/mysql -u root -p
 
 <br/>
 
-mysql에서 비밀번호 변경하기.
+- mysql에서 비밀번호 변경하기.
 
 ```
 ALTER USER 'root'@'localhost' IDENTIFIED BY '사용할 비밀번호';
@@ -350,7 +376,7 @@ mysql에서 나오고 싶으면 quit을 입력하면 나올 수 있다.
 
 <br/>
 
-Mysql 서버 종료하기.
+- mysql 서버 종료하기.
 
 ```
 $ bin/mysqladmin -u root -p shutdown
@@ -358,7 +384,9 @@ $ bin/mysqladmin -u root -p shutdown
 
 <br/>
 
-#### - mysql 환경설정
+<br/>
+
+- **mysql 환경설정**
 
 mysql 옵션 파일은 mysql이 실행될 때마다 읽힌다. 따라서 옵션파일을 설정하면 편리하게 사용할 수 있다. 
 
@@ -375,7 +403,9 @@ datadir=/usr/local/mysql/data
 
 <br/>
 
-#### - php 소스 설치
+<br/>
+
+- **php 소스 설치**
 
 php 설치에 필요한 의존성 패키지 설치
 
@@ -388,7 +418,7 @@ $ apt-get install libsqlite3-dev
 
 <br/>
 
-1. **소스 다운 받기**
+1. 소스 다운
 
 ```
 $ cd /usr/local
@@ -398,7 +428,7 @@ $ tar xvfz php-7.4.8.tar.gz
 
 <br/>
 
-2. **Makefile 만들기 && Complie 하기 && install 하기**
+2. 소스 설치
 
 ```
 $ cd php-7.4.8
@@ -424,7 +454,9 @@ $ make install
 
 <br/>
 
-#### - apache와 php 연동하기
+<br/>
+
+- **apache와 php 연동하기**
 
 <br/>
 
@@ -449,7 +481,9 @@ $ cp php.ini-production /usr/local/lib/php.ini
 
 <br/>
 
-#### - 테스트 하기
+<br/>
+
+- **테스트 하기**
 
 apache의 html, php 파일은 기본적으로 /htdocs에 위치한다. 
 
@@ -486,4 +520,3 @@ $ sudo curl http://127.0.0.1/
 브라우저 이용 http://127.0.0.1/phpinfo.php로 접속해서 다음 화면이 나오면 연동된것이다. 
 
 ![3](/Users/hyuck/ServerStudy/Week1/img/3.jpg)
-
