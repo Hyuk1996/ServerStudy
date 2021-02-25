@@ -1,3 +1,5 @@
+
+
 # 4주차 과제
 
 <br/>
@@ -6,6 +8,7 @@
 
 - 과제 전 개념 정리
 - Spring 환경 구축
+- API 작성
 
 <hr/>
 
@@ -55,8 +58,10 @@ Spring-boot은 java로 어플리케이션을 쉽고, 빠르고, 간편하게 개
 
 1. JDK 설치
 2. Spring-boot template 가져오기
-3. Nginx와 tomcat 연동하기
-4. Spring-boot 와 RDS 연결하기 
+3. Intellij 이용해서 ec2에 접속하기
+4. Nginx와 tomcat 연동하기
+5. Spring-boot 와 RDS 연결하기 
+6. 환경 Test 
 
 <br/>
 
@@ -84,6 +89,18 @@ sudo apt install default-jdk -y
 
 3.
 
+IntelliJ에서 SSH로 aws ec2 instance에 연결하면 intellij에서 아주 편하게 작업할 수 있다. 
+
+연결 방법은 일단 프로잭트를 만든 뒤, tool -> deployment -> configure에 SFTP로 ec2에 연결설정을 해준다. 
+
+그러면 이제 intellij에서 SFTP로 ec2에 접근할 수 있다. 그리고 tool -> start SSH session을 누르면 IntelliJ에서 terminal 환경으로 ec2에 접근할 수 있다. 
+
+<br/>
+
+<br/>
+
+4.
+
 tomcat을 사용하기 위해서는 nginx에 오는 요청을 tomcat으로 보내줘야 한다. 이를 위해서는 nginx의 server 블록에서 proxy를 설정해 주어야 한다. 
 
 <br/>
@@ -100,9 +117,54 @@ proxy는 대신이라는 의미로 중계자 역할을 한다. 예를 들어 ngi
 
 <br/>
 
-4.
+5.
 
 spring boot template 에서 database에 접근하기 위해서는 aplication.yml 파일에서 datasource 부분을 내가 원하는 연결하고자 하는 database로 설정해 줘야 한다. 
 
+<br/>
+
+- Url(Uniform Resource Locator)?
+
+URL은 웹에서 정해진 유일한 자원의 주소이다. 즉 client는 url을 통해 서버의 자원에 접근한다. 
+
+- url의 구조
+
+https://www.hyukserver.site:80/test
+
+https - 프로토콜 규악, 즉 브라우저가 어떤 프로토콜을 이용해서 자원에 접근할지를 나태난다.
+
+www.hyukserver.site - 접속할 서버의 domain이다. 
+
+80 - 서버의 80번 포트에게 요청한다는 의미이다. 
+
+/test. ~ - 서버에서 접근하고자 하는 자원에 대한 경로이다. 
+
+<br/>
+
+<br/>
+
+6.
+
+Postman을 이용해 aws ec2 instance 주소에 request 을 보내서 제대로된 결과 값이 return 되면 잘 연결된 것이다. 
+
 <hr/>
 
+<br/>
+
+## API 작성
+
+API를 작성하기 위해서는 spring-boot template의 구조를 알아야한다. 자세한 내용은 api-server-spring-boot-final의 README 파일을 보면 알 수 있다. 
+
+<br/>
+
+- spring-boot template 기본 구조
+
+Controller - Request를 받아 route를 service/provider에게 전해준다.
+
+Service/Provider - Controller가 준 요청을 받아서 Dao로 넘겨준다. 이때 Service는 update 관련된 작업을 담당하고, Provider는 select 관련 작업을 담당한다.
+
+Dao - 실질적으로 DB에서 부터 query를 통해 원하는 data를 가져온다. 
+
+- Annotation?
+
+Annotation의 사전적 의미는 '주석'이라는 의미를 가지고 있다. 따라서 자바 코드에 주석처럼 달려 특수한 의미를 부여해준다. 
