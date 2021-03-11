@@ -107,7 +107,15 @@ tomcat을 사용하기 위해서는 nginx에 오는 요청을 tomcat으로 보�
 
 - tomcat?
 
-tomcat은 web server에서 처리하지 못하는 동적파일을 처리해준다. 
+tomcat은 servlet container이다. 
+
+- servlet container ?
+
+servlet container는 servlet을 관리한다.
+
+- Servlet ?
+
+Servlet은 클라이언트의 요청을 받아 처리하고 그 결과를 클라이언트에게 반환해주는 Servlet class의 구현 규칙을 지킨 자바 프로그램이다.  
 
 - Proxy?
 
