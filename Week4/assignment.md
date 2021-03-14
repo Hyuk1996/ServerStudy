@@ -91,9 +91,9 @@ sudo apt install default-jdk -y
 
 IntelliJ에서 SSH로 aws ec2 instance에 연결하면 intellij에서 아주 편하게 작업할 수 있다. 
 
-연결 방법은 일단 프로잭트를 만든 뒤, tool -> deployment -> configure에 SFTP로 ec2에 연결설정을 해준다. 
+연결 방법은 일단 프로잭트를 만든 뒤, tool -> deployment -> configure에 SFTP로 ec2에 연결설정을 해준다. 연결 설정을 완료하면 SFTP로 연결이 완료된 것이다. 그러면 tool -> deployment -> brows remote control을 누르면 ec2의 파일들을 볼 수 있다. 
 
-그러면 이제 intellij에서 SFTP로 ec2에 접근할 수 있다. 그리고 tool -> start SSH session을 누르면 IntelliJ에서 terminal 환경으로 ec2에 접근할 수 있다. 
+그리고 tool -> start SSH session을 누르면 IntelliJ에서 ec2에 SSH를 이용해 접근할 수 있다. 
 
 <br/>
 
